@@ -2,13 +2,22 @@ import { useState } from "react";
 import memesData from "../../memesData.js";
 export default function Meme(){
 
-    const [memeImage, setMemeImage] = useState("");
+    const [meme, setMeme] = useState({
+        topText:"",
+        bottomText:"",
+        randomImage:""
+    });
+
+    const [memeImages, setMemeImages] = useState(memesData)
 
     function getMemeImage(){
-        const memesArray = memesData.data.memes;
+        const memesArray = memeImages.data.memes;
         const randomNumber = Math.floor(Math.random() * memesArray.length);
-
-        setMemeImage(memesArray[randomNumber].url);
+        const url = memesArray[randomNumber].url;
+        setMeme(prevImage => ({
+           ...prevImage,
+           randomImage: url 
+        }));
     }
     return(
         <main>
@@ -17,7 +26,7 @@ export default function Meme(){
                 <input type="text" placeholder="Bottom text" className="form--input"/>
                 <button className="form--button" onClick={getMemeImage}>Get a new meme image</button>
             </div>
-                <img src={memeImage} className="meme--image" alt="" />
+                <img src={meme.randomImage} className="meme--image" alt="" />
         </main>
     )
 }
